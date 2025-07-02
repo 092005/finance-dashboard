@@ -2,7 +2,7 @@ import Link from 'next/link';
 import NavLinks from '@/app/ui/dashboard/nav-links';
 import FinanceLogo from '@/app/ui/finance-logo';
 import { PowerIcon } from '@heroicons/react/24/outline';
-import { signOutAction } from '@/auth';
+import { signOutAction } from '@/app/lib/auth-actions';
 
 export default function SideNav() {
   return (
