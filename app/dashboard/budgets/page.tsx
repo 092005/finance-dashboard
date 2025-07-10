@@ -5,9 +5,9 @@ import { useState } from 'react';
 
 export default function Page() {
   const [budgets, setBudgets] = useState([
-    { id: 1, category: 'Food & Dining', limit: 500, spent: 320, period: 'Monthly' },
-    { id: 2, category: 'Transportation', limit: 300, spent: 180, period: 'Monthly' },
-    { id: 3, category: 'Entertainment', limit: 150, spent: 95, period: 'Monthly' }
+    { id: 1, category: 'Food & Dining', limit: 40000, spent: 26000, period: 'Monthly' },
+    { id: 2, category: 'Transportation', limit: 25000, spent: 15000, period: 'Monthly' },
+    { id: 3, category: 'Entertainment', limit: 12000, spent: 8000, period: 'Monthly' }
   ]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ category: 'Food', limit: '', period: 'Monthly' });
@@ -106,7 +106,7 @@ export default function Page() {
               </div>
               <div className="mt-4">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-300">${budget.spent} of ${budget.limit}</span>
+                  <span className="text-gray-300">₹{budget.spent.toLocaleString('en-IN')} of ₹{budget.limit.toLocaleString('en-IN')}</span>
                   <span className={isOverBudget ? 'text-red-400' : 'text-gray-300'}>{percentage}%</span>
                 </div>
                 <div className="mt-2 h-2 rounded-full bg-gray-700">

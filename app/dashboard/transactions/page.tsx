@@ -5,11 +5,21 @@ import { useState } from 'react';
 
 export default function Page() {
   const [transactions, setTransactions] = useState([
-    { id: 1, date: '2024-01-15', description: 'Grocery Shopping', category: 'Food', amount: -85.50, type: 'Expense' }
+    { id: 1, date: '2024-01-15', description: 'Grocery Shopping', category: 'Food', amount: -7000.00, type: 'Expense' }
   ]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ description: '', category: 'Food', amount: '', type: 'Expense' });
   const [searchTerm, setSearchTerm] = useState('');
+  
+  const budgets = [
+    { category: 'Food', limit: 40000, spent: 26000 },
+    { category: 'Transportation', limit: 25000, spent: 15000 },
+    { category: 'Entertainment', limit: 12000, spent: 8000 }
+  ];
+  
+  const getBudgetInfo = (category: string) => {
+    return budgets.find(b => b.category === category);
+  };
 
   const filteredTransactions = transactions.filter(transaction =>
     transaction.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -116,8 +126,8 @@ export default function Page() {
           </div>
         </div>
       )}
-      <div className="mt-6 flow-root">
-        <div className="inline-block min-w-full align-middle">
+      <div className="mt-6 grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
           <div className="rounded-lg bg-gray-900 p-2 md:pt-0">
             <table className="hidden min-w-full text-gray-300 md:table">
               <thead className="rounded-lg text-left text-sm font-normal">
@@ -152,7 +162,7 @@ export default function Page() {
                       {transaction.category}
                     </td>
                     <td className={`whitespace-nowrap px-3 py-3 ${transaction.amount < 0 ? 'text-red-400' : 'text-green-400'}`}>
-                      ${transaction.amount.toFixed(2)}
+                      ₹{Math.abs(transaction.amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
                     <td className="whitespace-nowrap px-3 py-3">
                       <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
@@ -165,6 +175,33 @@ export default function Page() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+        
+        <div>
+          <h2 className="text-xl font-bold text-white mb-4">Budget Overview</h2>
+          <div className="space-y-4">
+            {budgets.map((budget, index) => {
+              const percentage = Math.round((budget.spent / budget.limit) * 100);
+              const isOverBudget = percentage > 100;
+              return (
+                <div key={index} className="rounded-xl bg-gray-800 p-4 border border-gray-700">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-medium text-white">{budget.category}</h3>
+                    <span className={isOverBudget ? 'text-red-400 text-xs' : 'text-gray-300 text-xs'}>{percentage}%</span>
+                  </div>
+                  <div className="text-xs text-gray-300 mb-2">
+                    ₹{budget.spent.toLocaleString('en-IN')} of ₹{budget.limit.toLocaleString('en-IN')}
+                  </div>
+                  <div className="h-1.5 rounded-full bg-gray-700">
+                    <div 
+                      className={`h-1.5 rounded-full ${isOverBudget ? 'bg-red-500' : 'bg-red-600'}`} 
+                      style={{ width: `${Math.min(percentage, 100)}%` }}
+                    ></div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

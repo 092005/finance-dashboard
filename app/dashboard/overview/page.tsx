@@ -12,8 +12,8 @@ export default async function Page() {
   
   return (
     <main>
-      <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-        Finance Dashboard
+      <h1 className={`${lusitana.className} mb-4 text-lg md:text-xl text-white`}>
+        Dashboard
       </h1>
       
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -22,7 +22,7 @@ export default async function Page() {
             <h3 className="ml-2 text-sm font-medium">Total Balance</h3>
           </div>
           <p className="truncate rounded-xl bg-white px-4 py-8 text-center text-2xl">
-            $12,450.00
+            ₹10,20,000
           </p>
         </div>
         
@@ -31,7 +31,7 @@ export default async function Page() {
             <h3 className="ml-2 text-sm font-medium">Monthly Income</h3>
           </div>
           <p className="truncate rounded-xl bg-white px-4 py-8 text-center text-2xl">
-            $5,200.00
+            ₹4,25,000
           </p>
         </div>
         
@@ -40,7 +40,7 @@ export default async function Page() {
             <h3 className="ml-2 text-sm font-medium">Monthly Expenses</h3>
           </div>
           <p className="truncate rounded-xl bg-white px-4 py-8 text-center text-2xl">
-            $3,800.00
+            ₹3,10,000
           </p>
         </div>
         
@@ -49,7 +49,7 @@ export default async function Page() {
             <h3 className="ml-2 text-sm font-medium">Savings</h3>
           </div>
           <p className="truncate rounded-xl bg-white px-4 py-8 text-center text-2xl">
-            $8,650.00
+            ₹7,08,000
           </p>
         </div>
       </div>

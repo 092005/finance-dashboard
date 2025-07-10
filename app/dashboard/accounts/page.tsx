@@ -5,11 +5,12 @@ import { useState } from 'react';
 
 export default function Page() {
   const [accounts, setAccounts] = useState([
-    { id: 1, name: 'Checking Account', type: 'Checking', balance: 2450.00 }
+    { id: 1, name: 'Checking Account', type: 'Checking', balance: 200000.00 }
   ]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: '', type: 'Checking', balance: '' });
   const [searchTerm, setSearchTerm] = useState('');
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   const filteredAccounts = accounts.filter(account =>
     account.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -18,15 +19,30 @@ export default function Page() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newAccount = {
-      id: accounts.length + 1,
-      name: formData.name,
-      type: formData.type,
-      balance: parseFloat(formData.balance) || 0
-    };
-    setAccounts([...accounts, newAccount]);
+    if (editingId) {
+      setAccounts(accounts.map(account => 
+        account.id === editingId 
+          ? { ...account, name: formData.name, type: formData.type, balance: parseFloat(formData.balance) || 0 }
+          : account
+      ));
+      setEditingId(null);
+    } else {
+      const newAccount = {
+        id: accounts.length + 1,
+        name: formData.name,
+        type: formData.type,
+        balance: parseFloat(formData.balance) || 0
+      };
+      setAccounts([...accounts, newAccount]);
+    }
     setFormData({ name: '', type: 'Checking', balance: '' });
     setShowForm(false);
+  };
+
+  const handleEdit = (account: any) => {
+    setFormData({ name: account.name, type: account.type, balance: account.balance.toString() });
+    setEditingId(account.id);
+    setShowForm(true);
   };
 
   return (
@@ -54,7 +70,7 @@ export default function Page() {
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-gray-800 p-6 rounded-lg w-96">
-            <h2 className="text-xl font-bold text-white mb-4">Add New Account</h2>
+            <h2 className="text-xl font-bold text-white mb-4">{editingId ? 'Edit Account' : 'Add New Account'}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-200 mb-1">Account Name</label>
@@ -91,7 +107,7 @@ export default function Page() {
               </div>
               <div className="flex gap-2">
                 <button type="submit" className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
-                  Add Account
+                  {editingId ? 'Update Account' : 'Add Account'}
                 </button>
                 <button type="button" onClick={() => setShowForm(false)} className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">
                   Cancel
@@ -131,11 +147,14 @@ export default function Page() {
                       {account.type}
                     </td>
                     <td className="whitespace-nowrap px-3 py-3 text-gray-300">
-                      ${account.balance.toFixed(2)}
+                      ₹{account.balance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
                     <td className="whitespace-nowrap py-3 pl-6 pr-3">
                       <div className="flex justify-end gap-3">
-                        <button className="rounded-md border border-gray-600 p-2 hover:bg-gray-700 text-gray-300">
+                        <button 
+                          onClick={() => handleEdit(account)}
+                          className="rounded-md border border-gray-600 p-2 hover:bg-gray-700 text-gray-300"
+                        >
                           Edit
                         </button>
                       </div>
