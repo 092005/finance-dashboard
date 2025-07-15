@@ -16,6 +16,8 @@ export default function Page() {
     account.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     account.type.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
+  const totalBalance = accounts.reduce((sum, account) => sum + account.balance, 0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,6 +51,10 @@ export default function Page() {
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
         <h1 className={`${lusitana.className} text-2xl text-white`}>Accounts</h1>
+        <div className="bg-gray-800 rounded-lg px-4 py-2 border border-gray-700">
+          <span className="text-sm text-gray-300">Total Balance: </span>
+          <span className="text-lg font-bold text-green-400">₹{totalBalance.toLocaleString('en-IN')}</span>
+        </div>
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         <div className="relative flex flex-1 flex-shrink-0">

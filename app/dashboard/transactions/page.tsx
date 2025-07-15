@@ -25,6 +25,10 @@ export default function Page() {
     transaction.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
     transaction.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
+  const totalIncome = transactions.filter(t => t.type === 'Income').reduce((sum, t) => sum + t.amount, 0);
+  const totalExpenses = Math.abs(transactions.filter(t => t.type === 'Expense').reduce((sum, t) => sum + t.amount, 0));
+  const netAmount = totalIncome - totalExpenses;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,6 +49,22 @@ export default function Page() {
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
         <h1 className={`${lusitana.className} text-2xl text-white`}>Transactions</h1>
+        <div className="flex gap-4">
+          <div className="bg-gray-800 rounded-lg px-3 py-2 border border-gray-700">
+            <span className="text-xs text-gray-300">Income: </span>
+            <span className="text-sm font-bold text-green-400">₹{totalIncome.toLocaleString('en-IN')}</span>
+          </div>
+          <div className="bg-gray-800 rounded-lg px-3 py-2 border border-gray-700">
+            <span className="text-xs text-gray-300">Expenses: </span>
+            <span className="text-sm font-bold text-red-400">₹{totalExpenses.toLocaleString('en-IN')}</span>
+          </div>
+          <div className="bg-gray-800 rounded-lg px-3 py-2 border border-gray-700">
+            <span className="text-xs text-gray-300">Net: </span>
+            <span className={`text-sm font-bold ${netAmount >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+              ₹{netAmount.toLocaleString('en-IN')}
+            </span>
+          </div>
+        </div>
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         <div className="relative flex flex-1 flex-shrink-0">

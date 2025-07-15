@@ -4,13 +4,20 @@ import { lusitana } from '@/app/ui/fonts';
 import { useState } from 'react';
 
 export default function Page() {
+  const [totalIncome, setTotalIncome] = useState(100000);
   const [budgets, setBudgets] = useState([
     { id: 1, category: 'Food & Dining', limit: 40000, spent: 26000, period: 'Monthly' },
     { id: 2, category: 'Transportation', limit: 25000, spent: 15000, period: 'Monthly' },
     { id: 3, category: 'Entertainment', limit: 12000, spent: 8000, period: 'Monthly' }
   ]);
   const [showForm, setShowForm] = useState(false);
+  const [showIncomeForm, setShowIncomeForm] = useState(false);
   const [formData, setFormData] = useState({ category: 'Food', limit: '', period: 'Monthly' });
+  const [incomeData, setIncomeData] = useState('');
+
+  const totalBudgeted = budgets.reduce((sum, budget) => sum + budget.limit, 0);
+  const totalSpent = budgets.reduce((sum, budget) => sum + budget.spent, 0);
+  const remainingIncome = totalIncome - totalBudgeted;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,11 +33,42 @@ export default function Page() {
     setShowForm(false);
   };
 
+  const handleIncomeSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setTotalIncome(parseFloat(incomeData));
+    setIncomeData('');
+    setShowIncomeForm(false);
+  };
+
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
         <h1 className={`${lusitana.className} text-2xl text-white`}>Budgets</h1>
       </div>
+      
+      <div className="mt-4 grid gap-4 sm:grid-cols-3 mb-6">
+        <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+          <h3 className="text-sm font-medium text-gray-300">Total Income</h3>
+          <p className="text-2xl font-bold text-green-400">₹{totalIncome.toLocaleString('en-IN')}</p>
+          <button 
+            onClick={() => setShowIncomeForm(true)}
+            className="text-xs text-red-400 hover:text-red-300 mt-1"
+          >
+            Update Income
+          </button>
+        </div>
+        <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+          <h3 className="text-sm font-medium text-gray-300">Total Budgeted</h3>
+          <p className="text-2xl font-bold text-blue-400">₹{totalBudgeted.toLocaleString('en-IN')}</p>
+        </div>
+        <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+          <h3 className="text-sm font-medium text-gray-300">Remaining</h3>
+          <p className={`text-2xl font-bold ${remainingIncome >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+            ₹{remainingIncome.toLocaleString('en-IN')}
+          </p>
+        </div>
+      </div>
+      
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         <button 
           onClick={() => setShowForm(true)}
@@ -39,6 +77,36 @@ export default function Page() {
           Create Budget
         </button>
       </div>
+      
+      {showIncomeForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 p-6 rounded-lg w-96">
+            <h2 className="text-xl font-bold text-white mb-4">Update Monthly Income</h2>
+            <form onSubmit={handleIncomeSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-200 mb-1">Monthly Income</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={incomeData}
+                  onChange={(e) => setIncomeData(e.target.value)}
+                  className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
+                  placeholder="Enter your monthly income"
+                  required
+                />
+              </div>
+              <div className="flex gap-2">
+                <button type="submit" className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                  Update Income
+                </button>
+                <button type="button" onClick={() => setShowIncomeForm(false)} className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
