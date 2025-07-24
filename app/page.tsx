@@ -2,10 +2,22 @@ import FinanceLogo from '@/app/ui/finance-logo';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { lusitana } from '@/app/ui/fonts';
-
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth.config';
 import { redirect } from 'next/navigation';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'FinanceTracker - Smart Personal Finance Management Dashboard',
+  description: 'Transform your financial future with intelligent expense tracking, budget planning, and real-time insights. Start managing your money smarter today with our intuitive dashboard.',
+  keywords: 'personal finance, budget tracker, expense management, financial dashboard, money management, budget planning',
+  openGraph: {
+    title: 'FinanceTracker - Smart Finance Management',
+    description: 'Take control of your finances with intelligent tracking and budgeting',
+    type: 'website',
+    url: 'https://finance-dashboard-gules.vercel.app',
+  },
+};
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -33,7 +45,7 @@ export default async function Page() {
             <span className="text-red-500"> Management</span>
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-10">
-            Transform your financial future with intelligent tracking, budgeting, and insights
+            Transform your financial future with intelligent expense tracking, budget planning, and real-time insights
           </p>
           <Link
             href="/login"
