@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Critical CSS for above-the-fold content */
+.hero-gradient {
+  background: linear-gradient(135deg, #111827 0%, #000000 100%);
+}
+
+.card-shadow {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
 input[type='number'] {
   -moz-appearance: textfield;
 }
@@ -10,4 +19,23 @@ input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/* Performance optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
 }

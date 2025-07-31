@@ -22,6 +22,9 @@ export default function RootLayout({
         <meta name="robots" content="index, follow" />
         <meta name="theme-color" content="#dc2626" />
         <link rel="canonical" href="https://finance-dashboard-gules.vercel.app" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
       </head>
       <body className={`${inter.className} antialiased`}>
         <Providers>{children}</Providers>
